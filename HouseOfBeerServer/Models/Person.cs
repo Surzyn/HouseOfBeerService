@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace HouseOfBeerServer.Models
 {
+    //POCO
     public class Person
     {
         public Person(float salary)

@@ -12,37 +12,108 @@ namespace HouseOfBeerServer.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
-        Person zbysiu;
-
-        public PersonController()
+        static Person[] people = new Person[3]
         {
-            zbysiu = new Person(4001.43F)
+            new Person(4001.43F)
             {
                 Id = 1,
                 FirstName = "Zbyszek",
                 LastName = "Nowak",
                 Email = "znowak@gmail.com",
                 Tel = "555"
-            };
-        }
+            },
+            new Person(3333)
+             {
+                Id = 2,
+                    FirstName = "Alicja",
+                    LastName = "Kowalska",
+                    Email = "akowal@gmail.com",
+                    Tel = "6666"
+             },
+            new Person(6666)
+            {
+                Id = 10,
+                    FirstName = "Bob",
+                    LastName = "Lis",
+                    Email = "blis@lis.pl",
+                    Tel = "111111"
+            }
+        };
 
         [HttpGet]
-        public string GetName()
+        public string Ping()
         {
-            return zbysiu.FirstName + " " + zbysiu.LastName;
+            return "Pong";
+        }
+
+        [HttpPost]
+        public int AddPerson()
+        {
+            return 100;
+        }
+
+        [HttpPut("{id}")]
+        public bool EditPerson(int id)
+        {
+            foreach (Person p in people)
+            {
+                if (p.Id == id)
+                {
+                    p.FirstName = "Burger";
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        [HttpGet("{id}")]
+        public string GetName(int id)
+        {
+            foreach (Person person in people)
+            {
+                if (person.Id == id)
+                {
+                    return person.FirstName + " " + person.LastName;
+                }
+            }
+
+            return "Nie znaleziono osoby o danym id";
         }
 
 
-        [HttpGet("contact")]
-        public string GetContact()
+        [HttpGet("contact/{id}")]
+        public string GetContact(int id)
         {
-            return $"tel: {zbysiu.Tel}, email: {zbysiu.Email}";
+            foreach (Person p in people)
+            {
+                if (p.Id == id)
+                {
+                    return $"tel: {p.Tel}, email: {p.Email}";
+                }
+            }
+
+            return $"Nie znaleziono osoby o danym id: {id}";
         }
 
         [HttpGet("salary")]
         public float GetSalary()
         {
-            return zbysiu.Salary;
+            return people[0].Salary;
         }
+
+        [HttpGet("totalSalary")]
+        public float GetTotalSalary()
+        {
+            float sum = 0;
+            foreach (Person p in people)
+            {
+                sum += p.Salary;
+            }
+
+            return sum;
+        }
+
+
     }
 }
