@@ -8,6 +8,11 @@ namespace HouseOfBeerServer.Models
     //POCO
     public class Person
     {
+        public Person()
+        {
+
+        }
+
         public Person(float salary)
         {
             Salary = salary;

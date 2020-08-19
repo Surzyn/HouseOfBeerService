@@ -12,7 +12,7 @@ namespace HouseOfBeerServer.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
-        static Person[] people = new Person[3]
+        static List<Person> people = new List<Person>()
         {
             new Person(4001.43F)
             {
@@ -47,19 +47,37 @@ namespace HouseOfBeerServer.Controllers
         }
 
         [HttpPost]
-        public int AddPerson()
+        public int AddPerson(Person p)
         {
-            return 100;
+            people.Add(p);
+            return p.Id;
         }
 
-        [HttpPut("{id}")]
-        public bool EditPerson(int id)
+        [HttpPut("{id}/{name}/{last}")]
+        public bool EditPerson(int id, string name, string last)
         {
             foreach (Person p in people)
             {
                 if (p.Id == id)
                 {
-                    p.FirstName = "Burger";
+                    p.FirstName = name;
+                    p.LastName = last;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        [HttpPut]
+        public bool EditPerson2(int id, string name, string last)
+        {
+            foreach (Person p in people)
+            {
+                if (p.Id == id)
+                {
+                    p.FirstName = name;
+                    p.LastName = last;
                     return true;
                 }
             }
@@ -80,7 +98,6 @@ namespace HouseOfBeerServer.Controllers
 
             return "Nie znaleziono osoby o danym id";
         }
-
 
         [HttpGet("contact/{id}")]
         public string GetContact(int id)
